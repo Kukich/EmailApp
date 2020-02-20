@@ -1,0 +1,20 @@
+secrets: ['95c581a7b882508e9f6d3857c891609a6433f5cd']
+page: 1
+per_page: 20
+mongo: 
+  host: 'localhost'
+  port: 27017
+  db_name: 'EmailsApp'
+  collection: 'emails'
+
+redis:
+  host:  'localhost:6379'
+  channel: 'email_queue'
+  group: 'email_queue_group'
+  reader: 'Sender'
+
+mail:
+  smtp_host: 'smtp.yandex.ru:465'
+  login: 'kukichtest@yandex.ru'
+  password: 'testkukich'
+  delivery: 0
