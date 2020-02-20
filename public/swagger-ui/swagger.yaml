@@ -1,0 +1,163 @@
+swagger: "2.0"
+info:
+  description: "Приложение для отправки писем."
+  version: "1.0.0"
+  title: "EmailApp"
+  contact:
+    email: "mrkuk89@gmail.com"
+host: "localhost:3000"
+tags:
+- name: "notify"
+  description: "Весь функционал отправки писем и получение данных о них"
+schemes:
+- "http"
+paths:
+  /notify:
+    get:
+      tags:
+      - "notify"    
+      summary: "Получение списка отправленных писем (с пагинацией)"
+      description: ""
+      operationId: "get_mails"
+      responses:
+        200:
+          description: "list of mails"
+          schema:
+            type: "array"
+            items: 
+              type: "object"
+              properties:
+                id:
+                  type: "string"
+                created_at:
+                  type: "string"
+                  format: "date-time"
+                sender:
+                  type: "string"
+                subject:
+                  type: "string"
+                message:
+                  type: "string"
+                to:
+                  type: "array"
+                  items:
+                    type: "string"
+                sent_status:
+                  type: "boolean"
+  /notify/{MailId}:
+    get:
+      tags:
+      - "notify"
+      summary: "Поиск отправления по ID"
+      description: "Возвращает данные по запрошенному отправлению"
+      operationId: "getMailById"
+      parameters:
+      - name: "MailId"
+        in: "path"
+        description: "ID отправления"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Mail data"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+              created_at:
+                type: "string"
+                format: "date-time"
+              sender:
+                type: "string"
+              subject:
+                type: "string"
+              message:
+                type: "string"
+              to:
+                type: "array"
+                items:
+                  type: "string"
+              sent_status:
+                type: "boolean"
+          headers:
+            X-Prev-Page:
+              type: "integer"
+              format: "int32"
+              description: "Номер предыдущей страницы"
+            X-Next-Page:
+              type: "integer"
+              format: "int32"
+              description: "Номер следующей страницы"
+            X-Total-Pages:
+              type: "integer"
+              format: "int32"
+              description: "Общее число страниц"
+            X-Page:
+              type: "integer"
+              format: "int32"
+              description: "Номер страницы"
+            X-Total:
+              type: "integer"
+              format: "int32"
+              description: "Общее число элементов"
+            X-Per-Page:
+              type: "integer"
+              format: "int32"
+              description: "Число записей на страницу"
+        400:
+          description: "Ошибка параметров"
+          schema:
+            type: "object"
+            properties:
+              err:
+                type: "array"
+                items:
+                  type: "string"
+
+  /notify/:
+    post:
+      tags:
+      - "notify"
+      description: "Отправляет письмо"
+      operationId: "sendMail"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            sender:
+              type: "string"
+            subject:
+              type: "string"
+            message:
+              type: "string"
+            to:
+              type: "array"
+              items:
+                type: "string"
+      responses:
+        200:
+          description: "Удачная операция"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+        400:
+          description: "Ошибка параметров"
+          schema:
+            type: "object"
+            properties:
+              err:
+                type: "array"
+                items:
+                  type: "string"
+          
+
+    
+  
